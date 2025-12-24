@@ -56,7 +56,7 @@ export class UIController {
                     this.elements.tapToRestart.classList.add('blink');
                     this.restartTextTimeout = null;
                 }, 500);
-            }, 750);
+            }, 500);
         }
         
         this.gameOverButtonTimeout = setTimeout(() => {
