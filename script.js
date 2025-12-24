@@ -36,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
         leaderboardDifficultyFilters: document.getElementById('leaderboard-difficulty-filters'),
         leaderboardFilterBtns: document.querySelectorAll('.leaderboard-filter-btn'),
         leaderboardPagination: document.getElementById('leaderboard-pagination'),
-        musicToggleBtn: document.getElementById('music-toggle-btn')
+        musicToggleBtn: document.getElementById('music-toggle-btn'),
+        tapToRestart: document.getElementById('tap-to-restart')
     };
 
     const game = new Game(canvas);
@@ -88,6 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Don't trigger if clicking buttons or interactions inside
         if (e.target.closest('button') || e.target.closest('.difficulty-selector')) return;
         
+        // Prevent accidental restart if text is not visible yet
+        if (elements.tapToRestart && elements.tapToRestart.style.opacity === '0') return;
+
         ui.clearTimeouts();
         game.reset();
         ui.showGameScreen();

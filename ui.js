@@ -3,6 +3,7 @@ export class UIController {
         this.elements = elements;
         this.levelFadeTimeout = null;
         this.gameOverButtonTimeout = null;
+        this.restartTextTimeout = null;
     }
 
     showStartMenu() {
@@ -38,6 +39,25 @@ export class UIController {
 
         // Reset submit button text before it appears
         this.elements.submitScoreBtn.textContent = 'Submit Score';
+
+        // Delay Tap to Restart appearance
+        if (this.elements.tapToRestart) {
+            this.elements.tapToRestart.style.opacity = '0';
+            this.elements.tapToRestart.classList.remove('blink');
+            
+            this.restartTextTimeout = setTimeout(() => {
+                this.elements.tapToRestart.style.transition = 'opacity 0.5s ease-in';
+                this.elements.tapToRestart.style.opacity = '1';
+                
+                // Resume blinking after fade in
+                this.restartTextTimeout = setTimeout(() => {
+                    this.elements.tapToRestart.style.transition = '';
+                    this.elements.tapToRestart.style.opacity = '';
+                    this.elements.tapToRestart.classList.add('blink');
+                    this.restartTextTimeout = null;
+                }, 500);
+            }, 1500);
+        }
         
         this.gameOverButtonTimeout = setTimeout(() => {
             gameOverButtons.forEach(btn => btn.disabled = false);
@@ -149,6 +169,10 @@ export class UIController {
         if (this.gameOverButtonTimeout) {
             clearTimeout(this.gameOverButtonTimeout);
             this.gameOverButtonTimeout = null;
+        }
+        if (this.restartTextTimeout) {
+            clearTimeout(this.restartTextTimeout);
+            this.restartTextTimeout = null;
         }
     }
 }
