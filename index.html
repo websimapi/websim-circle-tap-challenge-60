@@ -57,18 +57,22 @@
                 </div>
 
                 <div id="game-over-buttons">
-                  <button id="home-btn" class="menu-btn" aria-label="Back to Home">
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"></path>
-                      </svg>
-                  </button>
-                  <button id="leaderboard-btn" class="menu-btn" aria-label="Leaderboard">
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M3 13h3v7H3v-7zm5-2h3v9H8v-9zm5-6h3v15h-3V5z"></path>
-                      </svg>
-                  </button>
-                  <button id="submit-score-btn" class="menu-btn">Submit Score</button>
-                  <button id="replay-btn" class="menu-btn">Instant Replay</button>
+                    <div class="button-row">
+                        <button id="submit-score-btn" class="menu-btn">Submit Score</button>
+                        <button id="replay-btn" class="menu-btn">Instant Replay</button>
+                    </div>
+                    <div class="button-row icon-row">
+                        <button id="home-btn" class="menu-btn icon-only" aria-label="Back to Home">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"></path>
+                            </svg>
+                        </button>
+                        <button id="leaderboard-btn" class="menu-btn icon-only" aria-label="Leaderboard">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M3 13h3v7H3v-7zm5-2h3v9H8v-9zm5-6h3v15h-3V5z"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
             <button id="music-toggle-btn" class="icon-btn" aria-label="Toggle Music">

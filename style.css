@@ -275,25 +275,40 @@ html, body {
 
 #game-over-buttons {
     display: flex;
-    flex-direction: row;
-    gap: calc(8px * var(--ui-scale));
-    margin-top: calc(8px * var(--ui-scale));
-    justify-content: center;
+    flex-direction: column;
+    gap: calc(10px * var(--ui-scale));
+    margin-top: calc(12px * var(--ui-scale));
+    align-items: center;
     width: 100%;
-    align-items: stretch;
+    max-width: 80%; /* Constrain width to fit in circle */
 }
 
-#leaderboard-btn, #home-btn {
-    flex-grow: 0;
-    padding-left: calc(12px * var(--ui-scale));
-    padding-right: calc(12px * var(--ui-scale));
+.button-row {
+    display: flex;
+    gap: calc(8px * var(--ui-scale));
+    width: 100%;
+    justify-content: center;
+}
+
+.button-row.icon-row {
+    width: auto;
+    gap: calc(15px * var(--ui-scale));
+}
+
+.menu-btn.icon-only {
+    flex: 0 0 auto;
+    padding: calc(10px * var(--ui-scale));
+    width: calc(44px * var(--ui-scale));
+    height: calc(44px * var(--ui-scale));
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 50%;
 }
 
-#leaderboard-btn svg, #home-btn svg {
-    height: 1.2em;
+.menu-btn.icon-only svg {
+    width: 1.5em;
+    height: 1.5em;
 }
 
 #difficulty-selection {
