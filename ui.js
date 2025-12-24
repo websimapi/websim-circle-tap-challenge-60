@@ -122,6 +122,25 @@ export class UIController {
         this.elements.submitScoreBtn.textContent = text;
     }
 
+    updateDifficulty(difficulty) {
+        // Update top-right indicator
+        const indicator = document.getElementById('difficulty-indicator');
+        if (indicator) {
+            indicator.setAttribute('data-difficulty', difficulty);
+            indicator.title = `Difficulty: ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}`;
+        }
+
+        // Update buttons
+        const allDiffBtns = document.querySelectorAll('.diff-btn');
+        allDiffBtns.forEach(btn => {
+            if (btn.dataset.difficulty === difficulty) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
     clearTimeouts() {
         if (this.levelFadeTimeout) {
             clearTimeout(this.levelFadeTimeout);

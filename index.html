@@ -11,17 +11,50 @@
     <div id="game-container">
         <canvas id="game-canvas"></canvas>
         <div id="ui-container">
+            <div id="difficulty-indicator" data-difficulty="easy" title="Difficulty: Easy">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
             <div id="score-display" class="hidden">Score: <span id="score">0</span></div>
             <div id="level-display" class="hidden">1</div>
             
             <div id="start-menu">
                 <h1 class="title-large">Circle Tap</h1>
                 <div id="tap-to-start" class="blink">Tap to Start</div>
+                <div class="difficulty-selector" id="start-difficulty-selector">
+                    <button class="diff-btn active" data-difficulty="easy">
+                        <div class="diff-icon"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+                        <span>Easy</span>
+                    </button>
+                    <button class="diff-btn" data-difficulty="medium">
+                        <div class="diff-icon"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+                        <span>Med</span>
+                    </button>
+                    <button class="diff-btn" data-difficulty="hard">
+                        <div class="diff-icon"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+                        <span>Hard</span>
+                    </button>
+                </div>
             </div>
 
             <div id="game-over-menu" class="hidden">
                 <h2>Game Over</h2>
                 <p>Final Score: <span id="final-score">0</span></p>
+                
+                <div class="difficulty-selector" id="game-over-difficulty-selector">
+                    <button class="diff-btn active" data-difficulty="easy">
+                        <div class="diff-icon"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+                        <span>Easy</span>
+                    </button>
+                    <button class="diff-btn" data-difficulty="medium">
+                        <div class="diff-icon"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+                        <span>Med</span>
+                    </button>
+                    <button class="diff-btn" data-difficulty="hard">
+                        <div class="diff-icon"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+                        <span>Hard</span>
+                    </button>
+                </div>
+
                 <div id="game-over-buttons">
                   <button id="home-btn" class="menu-btn" aria-label="Back to Home">
                       <svg viewBox="0 0 24 24" fill="currentColor">

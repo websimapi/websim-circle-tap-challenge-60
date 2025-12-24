@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         itemsPerPage: 10,
         currentDifficulty: 'easy'
     };
+    let currentDifficulty = 'easy';
 
     // Set up game callbacks
     game.onScoreUpdate = (score) => ui.updateScore(score);
@@ -60,10 +61,23 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.showGameOverMenu(gameData.score);
     };
 
+    // Difficulty Selection
+    document.querySelectorAll('.diff-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent bubbling to start menu
+            const difficulty = btn.dataset.difficulty;
+            currentDifficulty = difficulty;
+            ui.updateDifficulty(difficulty);
+        });
+    });
+
     // Tap to Start
-    elements.startMenu.addEventListener('click', () => {
+    elements.startMenu.addEventListener('click', (e) => {
+        // Prevent starting if clicking on difficulty buttons (just in case stopPropagation fails or structure changes)
+        if (e.target.closest('.difficulty-selector')) return;
+        
         handleFirstInteraction();
-        game.start('easy');
+        game.start(currentDifficulty);
         ui.showGameScreen();
     });
 
@@ -72,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.clearTimeouts(); // Clear any pending timeouts from the previous game over screen
         game.reset();
         ui.showGameScreen();
-        game.start(game.currentDifficulty);
+        game.start(currentDifficulty);
     });
 
     // Home button
@@ -383,5 +397,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial setup
     updateUIScale();
     game.reset();
+    ui.updateDifficulty(currentDifficulty);
     migrateUserScores();
 });

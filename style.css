@@ -68,6 +68,104 @@ html, body {
     pointer-events: none; /* Let clicks pass through to canvas */
 }
 
+/* Difficulty Indicator (Top Right) */
+#difficulty-indicator {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 4px;
+    padding: 8px;
+    z-index: 10;
+    pointer-events: auto; /* Allows hover */
+    background: rgba(0,0,0,0.3);
+    border-radius: 6px;
+    transition: opacity 0.3s;
+}
+
+#difficulty-indicator .bar {
+    width: 6px;
+    height: 16px;
+    background: #444;
+    border-radius: 2px;
+    transition: background-color 0.3s;
+}
+
+#difficulty-indicator[data-difficulty="easy"] .bar:nth-child(1) { background-color: var(--success-color); }
+#difficulty-indicator[data-difficulty="medium"] .bar:nth-child(1),
+#difficulty-indicator[data-difficulty="medium"] .bar:nth-child(2) { background-color: #f07b3f; }
+#difficulty-indicator[data-difficulty="hard"] .bar:nth-child(1),
+#difficulty-indicator[data-difficulty="hard"] .bar:nth-child(2),
+#difficulty-indicator[data-difficulty="hard"] .bar:nth-child(3) { background-color: var(--fail-color); }
+
+/* Difficulty Selector (Menus) */
+.difficulty-selector {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 10px 0;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.diff-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 60px;
+}
+
+.diff-btn span {
+    font-size: calc(0.7rem * var(--ui-scale));
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #888;
+}
+
+.diff-btn.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.diff-btn.active span {
+    color: #fff;
+}
+
+.diff-icon {
+    display: flex;
+    gap: 2px;
+}
+
+.diff-icon .bar {
+    width: 4px;
+    height: 10px;
+    background: #555;
+    border-radius: 1px;
+    transition: background-color 0.3s;
+}
+
+/* Button colors based on type */
+.diff-btn[data-difficulty="easy"].active .diff-icon .bar:nth-child(1) { background-color: var(--success-color); }
+.diff-btn[data-difficulty="medium"].active .diff-icon .bar:nth-child(1),
+.diff-btn[data-difficulty="medium"].active .diff-icon .bar:nth-child(2) { background-color: #f07b3f; }
+.diff-btn[data-difficulty="hard"].active .diff-icon .bar:nth-child(1),
+.diff-btn[data-difficulty="hard"].active .diff-icon .bar:nth-child(2),
+.diff-btn[data-difficulty="hard"].active .diff-icon .bar:nth-child(3) { background-color: var(--fail-color); }
+
+@media (hover: hover) {
+    .diff-btn:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
 #score-display {
     position: absolute;
     top: 5vh;
