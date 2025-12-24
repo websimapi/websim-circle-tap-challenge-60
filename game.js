@@ -56,6 +56,7 @@ export class Game {
         this.currentColorHsl = hsl(getHslStringForLevel(1));
         this.targetColorHsl = hsl(getHslStringForLevel(1));
         this.lastGameData = {};
+        this.failTap = null;
 
         this.onGameOver = null;
         this.onScoreUpdate = null;
@@ -127,6 +128,7 @@ export class Game {
         this.level = 1; // Start at level 1, not 0
         this.tapsThisLevel = 0;
         this.tapsForNextLevel = 1;
+        this.failTap = null;
         
         this.currentColorHsl = hsl(getHslStringForLevel(1));
         this.targetColorHsl = hsl(getHslStringForLevel(1));
@@ -255,6 +257,45 @@ export class Game {
             this.ctx.stroke();
         }
 
+        // Draw fail tap indicator
+        if (this.failTap) {
+            const age = (performance.now() - this.failTap.timestamp) / 1000;
+            if (age < 3) {
+                const opacity = Math.max(0, 1 - (age / 3));
+                const failColor = hsl(this.colors.fail);
+                failColor.opacity = opacity;
+                const failColorStr = failColor.toString();
+
+                this.ctx.save();
+                this.ctx.rotate(this.failTap.angle);
+                
+                // Ghost cursor line
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.radius - this.lineWidth / 2, 0);
+                this.ctx.lineTo(this.radius + this.lineWidth / 2, 0);
+                this.ctx.strokeStyle = failColorStr;
+                this.ctx.lineWidth = this.lineWidth / 2.5;
+                this.ctx.lineCap = 'butt';
+                this.ctx.stroke();
+
+                // 'X' mark for clarity
+                const xSize = this.lineWidth * 0.4;
+                this.ctx.translate(this.radius, 0);
+                this.ctx.beginPath();
+                this.ctx.moveTo(-xSize, -xSize);
+                this.ctx.lineTo(xSize, xSize);
+                this.ctx.moveTo(xSize, -xSize);
+                this.ctx.lineTo(-xSize, xSize);
+                this.ctx.strokeStyle = failColorStr;
+                this.ctx.lineWidth = Math.max(2, this.size * 0.005);
+                this.ctx.stroke();
+
+                this.ctx.restore();
+            } else {
+                this.failTap = null;
+            }
+        }
+
         // Draw rotating line
         this.ctx.rotate(this.angle);
         this.ctx.beginPath();
@@ -333,6 +374,10 @@ export class Game {
             
             if (this.onScoreUpdate) this.onScoreUpdate(this.score);
         } else {
+            this.failTap = {
+                angle: this.angle,
+                timestamp: performance.now()
+            };
             this.gameOver();
         }
     }
@@ -353,6 +398,7 @@ export class Game {
         this.level = 1;
         this.tapsThisLevel = 0;
         this.tapsForNextLevel = 1;
+        this.failTap = null;
         this.currentColorHsl = hsl(getHslStringForLevel(1));
         
         // Update visual state for idle mode
