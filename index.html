@@ -15,18 +15,8 @@
             <div id="level-display" class="hidden">1</div>
             
             <div id="start-menu">
-                <h1>Circle Tap</h1>
-                <p>Tap when the line is in the colored zone.</p>
-                <div id="difficulty-selection">
-                    <button class="difficulty-btn menu-btn" data-difficulty="easy">Easy</button>
-                    <button class="difficulty-btn menu-btn" data-difficulty="medium">Medium</button>
-                    <button class="difficulty-btn menu-btn" data-difficulty="hard">Hard</button>
-                    <button id="leaderboard-btn" class="menu-btn" aria-label="Leaderboard">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M3 13h3v7H3v-7zm5-2h3v9H8v-9zm5-6h3v15h-3V5z"></path>
-                        </svg>
-                    </button>
-                </div>
+                <h1 class="title-large">Circle Tap</h1>
+                <div id="tap-to-start" class="blink">Tap to Start</div>
             </div>
 
             <div id="game-over-menu" class="hidden">
@@ -36,6 +26,11 @@
                   <button id="home-btn" class="menu-btn" aria-label="Back to Home">
                       <svg viewBox="0 0 24 24" fill="currentColor">
                           <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"></path>
+                      </svg>
+                  </button>
+                  <button id="leaderboard-btn" class="menu-btn" aria-label="Leaderboard">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M3 13h3v7H3v-7zm5-2h3v9H8v-9zm5-6h3v15h-3V5z"></path>
                       </svg>
                   </button>
                   <button id="submit-score-btn" class="menu-btn">To Submit</button>

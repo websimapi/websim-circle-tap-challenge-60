@@ -60,13 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.showGameOverMenu(gameData.score);
     };
 
-    // Difficulty selection
-    elements.difficultyBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            handleFirstInteraction();
-            game.start(btn.dataset.difficulty);
-            ui.showGameScreen();
-        });
+    // Tap to Start
+    elements.startMenu.addEventListener('click', () => {
+        handleFirstInteraction();
+        game.start('easy');
+        ui.showGameScreen();
     });
 
     // Restart button
