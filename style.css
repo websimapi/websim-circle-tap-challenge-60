@@ -280,7 +280,7 @@ html, body {
     margin-top: calc(12px * var(--ui-scale));
     align-items: center;
     width: 100%;
-    max-width: 80%; /* Constrain width to fit in circle */
+    max-width: calc(280px * var(--ui-scale)); /* Constrain width to fit snug in circle */
 }
 
 .button-row {
@@ -332,18 +332,17 @@ button {
 }
 
 .menu-btn {
-    flex-grow: 1;
-    flex-shrink: 1;
-    /* flex-basis: 0; */ /* Removed to allow content-based sizing */
-    padding: 10px 8px; /* Adjusted padding */
-    white-space: nowrap;
+    flex: 1;
+    padding: calc(8px * var(--ui-scale)) calc(4px * var(--ui-scale));
+    white-space: normal; /* Allow text wrapping */
     overflow: hidden;
-    text-overflow: ellipsis;
-    /* min-width: 0; */ /* Removed to allow content-based sizing */
-}
-
-.menu-btn {
-    font-size: calc(0.9rem * var(--ui-scale));
+    text-align: center;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(44px * var(--ui-scale));
+    font-size: calc(0.85rem * var(--ui-scale));
 }
 
 button:disabled {
