@@ -69,6 +69,7 @@ export class Game {
     setDifficulty(difficulty) {
         this.currentDifficulty = difficulty;
         this.targetSize = difficulties[difficulty].size;
+        this.speed = difficulties[difficulty].speed;
         this.resizeCanvas();
         // Generate a random target for visual flair in menu
         if (this.gameState === 'start') {
@@ -148,11 +149,6 @@ export class Game {
     gameOver() {
         playFail();
         this.gameState = 'gameover';
-        
-        if (this.animationFrameId) {
-            cancelAnimationFrame(this.animationFrameId);
-            this.animationFrameId = null;
-        }
         
         this.replayFrames.push({
             angle: this.angle,
@@ -273,9 +269,6 @@ export class Game {
     }
 
     gameLoop(currentTime) {
-        // Stop updating if gameover (animation frame cancelled in gameOver anyway)
-        if (this.gameState === 'gameover') return;
-
         const deltaTime = (currentTime - this.lastFrameTime) / 1000;
         this.lastFrameTime = currentTime;
 
@@ -299,9 +292,10 @@ export class Game {
                 timestamp: currentTime,
                 pulseAmount: 0,
             });
-        } else if (this.gameState === 'start') {
+        } else if (this.gameState === 'start' || this.gameState === 'gameover') {
             // Idle spin
-            this.angle += (0.5 * Math.PI) * deltaTime;
+            const idleSpeed = difficulties[this.currentDifficulty].speed;
+            this.angle += idleSpeed * deltaTime;
         }
 
         this.draw();
