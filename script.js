@@ -65,9 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.diff-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation(); // Prevent bubbling to start menu
+            handleFirstInteraction(); // Start audio on difficulty select
             const difficulty = btn.dataset.difficulty;
             currentDifficulty = difficulty;
             ui.updateDifficulty(difficulty);
+            game.setDifficulty(difficulty); // Update visuals
         });
     });
 
@@ -398,5 +400,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUIScale();
     game.reset();
     ui.updateDifficulty(currentDifficulty);
+    game.setDifficulty(currentDifficulty);
     migrateUserScores();
 });

@@ -60,6 +60,20 @@ export class Game {
         this.onGameOver = null;
         this.onScoreUpdate = null;
         this.onLevelUp = null;
+
+        // Start idle animation loop
+        this.lastFrameTime = performance.now();
+        this.gameLoop(this.lastFrameTime);
+    }
+
+    setDifficulty(difficulty) {
+        this.currentDifficulty = difficulty;
+        this.targetSize = difficulties[difficulty].size;
+        this.resizeCanvas();
+        // Generate a random target for visual flair in menu
+        if (this.gameState === 'start') {
+            this.generateNewTarget();
+        }
     }
 
     resizeCanvas() {
@@ -125,20 +139,20 @@ export class Game {
             difficulties,
             colors: this.colors,
         };
-
-        this.lastFrameTime = performance.now();
-        if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
-        this.animationFrameId = requestAnimationFrame((t) => this.gameLoop(t));
-
+        
+        // Loop continues, just state update
         if (this.onScoreUpdate) this.onScoreUpdate(this.score);
-        if (this.onLevelUp) this.onLevelUp(this.level, true); // Pass true to indicate initial level
+        if (this.onLevelUp) this.onLevelUp(this.level, true); 
     }
 
     gameOver() {
         playFail();
         this.gameState = 'gameover';
         
-        if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
+        }
         
         this.replayFrames.push({
             angle: this.angle,
@@ -259,7 +273,8 @@ export class Game {
     }
 
     gameLoop(currentTime) {
-        if (this.gameState !== 'playing') return;
+        // Stop updating if gameover (animation frame cancelled in gameOver anyway)
+        if (this.gameState === 'gameover') return;
 
         const deltaTime = (currentTime - this.lastFrameTime) / 1000;
         this.lastFrameTime = currentTime;
@@ -271,18 +286,23 @@ export class Game {
         this.currentColorHsl.l += (this.targetColorHsl.l - this.currentColorHsl.l) * lerpFactor;
         this.currentColorHsl.opacity += (this.targetColorHsl.opacity - this.currentColorHsl.opacity) * lerpFactor;
 
-        this.angle += this.speed * this.direction * deltaTime;
-        
-        this.replayFrames.push({
-            angle: this.angle,
-            targetStartAngle: this.targetStartAngle,
-            targetSize: this.targetSize,
-            score: this.score,
-            level: this.level,
-            targetColor: this.currentColorHsl.toString(),
-            timestamp: currentTime,
-            pulseAmount: 0, // Initial value, will be updated in draw()
-        });
+        if (this.gameState === 'playing') {
+            this.angle += this.speed * this.direction * deltaTime;
+            
+            this.replayFrames.push({
+                angle: this.angle,
+                targetStartAngle: this.targetStartAngle,
+                targetSize: this.targetSize,
+                score: this.score,
+                level: this.level,
+                targetColor: this.currentColorHsl.toString(),
+                timestamp: currentTime,
+                pulseAmount: 0,
+            });
+        } else if (this.gameState === 'start') {
+            // Idle spin
+            this.angle += (0.5 * Math.PI) * deltaTime;
+        }
 
         this.draw();
         this.animationFrameId = requestAnimationFrame((t) => this.gameLoop(t));
@@ -334,16 +354,21 @@ export class Game {
     }
 
     reset() {
-        if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
         this.gameState = 'start';
         this.score = 0;
         this.level = 1;
         this.tapsThisLevel = 0;
         this.tapsForNextLevel = 1;
         this.currentColorHsl = hsl(getHslStringForLevel(1));
-        this.targetSize = difficulties[this.currentDifficulty].size;
-        this.targetStartAngle = Math.PI / 4;
+        
+        // Update visual state for idle mode
+        this.setDifficulty(this.currentDifficulty);
         this.angle = -Math.PI / 2;
-        this.resizeCanvas();
+        
+        // Ensure loop is running
+        if (!this.animationFrameId) {
+            this.lastFrameTime = performance.now();
+            this.gameLoop(this.lastFrameTime);
+        }
     }
 }
