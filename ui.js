@@ -12,7 +12,7 @@ export class UIController {
         this.elements.levelDisplay.classList.add('hidden');
         this.clearTimeouts(); // Clear any pending timeouts
         this.elements.submitScoreBtn.disabled = false;
-        this.elements.submitScoreBtn.textContent = 'To Submit';
+        this.elements.submitScoreBtn.textContent = 'Submit Score';
     }
 
     showGameScreen() {
@@ -37,7 +37,7 @@ export class UIController {
         gameOverButtons.forEach(btn => btn.disabled = true);
 
         // Reset submit button text before it appears
-        this.elements.submitScoreBtn.textContent = 'To Submit';
+        this.elements.submitScoreBtn.textContent = 'Submit Score';
         
         this.gameOverButtonTimeout = setTimeout(() => {
             gameOverButtons.forEach(btn => btn.disabled = false);

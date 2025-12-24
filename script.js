@@ -2,7 +2,7 @@ import { Game, difficulties } from './game.js';
 import { UIController } from './ui.js';
 import { submitScore, fetchLeaderboard, renderLeaderboardList, renderLeaderboardPagination, syncScores, migrateUserScores } from './leaderboard.js';
 import { showReplay, hideReplay } from './replay.js';
-import { playBackgroundMusic, fadeInMusic, fadeOutMusic } from './audio.js';
+import { playBackgroundMusic, fadeInMusic, fadeOutMusic, toggleMute } from './audio.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('game-canvas');
@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         startMenu: document.getElementById('start-menu'),
         gameOverMenu: document.getElementById('game-over-menu'),
         finalScoreEl: document.getElementById('final-score'),
-        restartBtn: document.getElementById('restart-btn'),
         homeBtn: document.getElementById('home-btn'),
         difficultyBtns: document.querySelectorAll('.difficulty-btn'),
         replayBtn: document.getElementById('replay-btn'),
@@ -36,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
         leaderboardList: document.getElementById('leaderboard-list'),
         leaderboardDifficultyFilters: document.getElementById('leaderboard-difficulty-filters'),
         leaderboardFilterBtns: document.querySelectorAll('.leaderboard-filter-btn'),
-        leaderboardPagination: document.getElementById('leaderboard-pagination')
+        leaderboardPagination: document.getElementById('leaderboard-pagination'),
+        musicToggleBtn: document.getElementById('music-toggle-btn')
     };
 
     const game = new Game(canvas);
@@ -83,9 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.showGameScreen();
     });
 
-    // Restart button
-    elements.restartBtn.addEventListener('click', () => {
-        ui.clearTimeouts(); // Clear any pending timeouts from the previous game over screen
+    // Game Over Menu Tap to Restart
+    elements.gameOverMenu.addEventListener('click', (e) => {
+        // Don't trigger if clicking buttons or interactions inside
+        if (e.target.closest('button') || e.target.closest('.difficulty-selector')) return;
+        
+        ui.clearTimeouts();
         game.reset();
         ui.showGameScreen();
         game.start(currentDifficulty);
@@ -137,10 +140,30 @@ document.addEventListener('DOMContentLoaded', () => {
             () => {
                 ui.setSubmitButtonState('disabled', 'Error!');
                 setTimeout(() => {
-                    ui.setSubmitButtonState('enabled', 'To Submit');
+                    ui.setSubmitButtonState('enabled', 'Submit Score');
                 }, 2000);
             }
         );
+    });
+
+    // Music Toggle
+    let isMuted = false;
+    elements.musicToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Don't trigger game tap
+        handleFirstInteraction(); // Ensure audio context is ready
+        isMuted = !isMuted;
+        toggleMute(isMuted);
+        
+        const onIcon = elements.musicToggleBtn.querySelector('.volume-on');
+        const offIcon = elements.musicToggleBtn.querySelector('.volume-off');
+        
+        if (isMuted) {
+            onIcon.classList.add('hidden');
+            offIcon.classList.remove('hidden');
+        } else {
+            onIcon.classList.remove('hidden');
+            offIcon.classList.add('hidden');
+        }
     });
 
     async function updateLeaderboardView() {
@@ -354,6 +377,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Tap handler
     const tapHandler = (e) => {
+        // Prevent game tap if clicking music toggle
+        if (e.target.closest('#music-toggle-btn')) return;
+
         if (e.target.tagName !== 'BUTTON') {
             e.preventDefault();
             game.handleTap();

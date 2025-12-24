@@ -184,14 +184,18 @@ html, body {
 }
 
 #game-over-menu {
-    background-color: rgba(22, 33, 62, 0.9);
-    padding: calc(12px * var(--ui-scale)) calc(20px * var(--ui-scale));
-    border-radius: calc(12px * var(--ui-scale));
+    background-color: rgba(22, 33, 62, 0.95);
+    padding: calc(20px * var(--ui-scale)) calc(30px * var(--ui-scale));
+    border-radius: calc(16px * var(--ui-scale));
     pointer-events: all;
     max-width: 90%;
-    z-index: 1;
+    z-index: 2;
     position: absolute;
-    bottom: 5%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    min-width: 300px;
 }
 
 #start-menu {
@@ -250,9 +254,22 @@ html, body {
     font-size: calc(1.3rem * var(--ui-scale));
 }
 
-#game-over-menu p {
+#game-over-menu .score-text {
     margin: 0;
-    font-size: calc(0.9rem * var(--ui-scale));
+    font-size: calc(1.5rem * var(--ui-scale));
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+#tap-to-restart {
+    font-size: calc(1.2rem * var(--ui-scale));
+    font-weight: bold;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 15px 0;
+    cursor: pointer;
 }
 
 #game-over-buttons {
@@ -651,4 +668,32 @@ button:active {
 
 .level-out {
     animation: bounceOut 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+
+#music-toggle-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.3);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    color: var(--text-color);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+#music-toggle-btn:hover {
+    background: rgba(0,0,0,0.5);
+}
+
+.icon-btn svg {
+    width: 100%;
+    height: 100%;
 }
